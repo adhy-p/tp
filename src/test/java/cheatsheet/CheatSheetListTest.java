@@ -48,14 +48,6 @@ class CheatSheetListTest {
 
     @Test
     void testAdd() {
-        for (int i = 0; i < 10; i++) {
-            CheatSheetList.add(new CheatSheet("Name" + i, "Language" + i, "Details" + i));
-        }
-        assertEquals(10, CheatSheetList.getSize());
-        for (int i = 0; i < 10; i++) {
-            CheatSheetList.remove("Name" + i);
-        }
-
         CheatSheetList.clear();
         for (int i = 0; i < 10; i++) {
             CheatSheetList.add(new CheatSheet("Name" + i, "Language" + i, "Details" + i));
