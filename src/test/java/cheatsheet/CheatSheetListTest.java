@@ -89,6 +89,34 @@ class CheatSheetListTest {
     }
 
     @Test
+    void remove_negativeIndex_exceptionThrown() {
+        CheatSheetList.clear();
+        for (int i = 0; i < 10; i++) {
+            CheatSheetList.add(new CheatSheet("Name" + i, "Language" + i, "Details" + i));
+        }
+        try {
+            CheatSheetList.remove(-1);
+            fail();
+        } catch (IndexOutOfBoundsException e) {
+            // todo: add error message
+        }
+    }
+
+    @Test
+    void remove_nonExistentName_exceptionThrown() {
+        CheatSheetList.clear();
+        for (int i = 0; i < 10; i++) {
+            CheatSheetList.add(new CheatSheet("Name" + i, "Language" + i, "Details" + i));
+        }
+        try {
+            CheatSheetList.remove("dummy");
+            fail();
+        } catch (IndexOutOfBoundsException e) {
+            // todo: add error message
+        }
+    }
+
+    @Test
     void testGetCheatSheet() {
         CheatSheetList.clear();
         CheatSheet test = new CheatSheet("Name1", "Language1", "Details1");
@@ -106,7 +134,7 @@ class CheatSheetListTest {
     }
 
     @Test
-    void getCheatSheetByIndex_negativeIndex_exceptionThrown() {
+    void getCheatSheet_negativeIndex_exceptionThrown() {
         CheatSheetList.clear();
         CheatSheet test;
         for (int i = 0; i < 10; i++) {
@@ -121,7 +149,7 @@ class CheatSheetListTest {
     }
 
     @Test
-    void getCheatSheetByName_nonExistentName_exceptionThrown() {
+    void getCheatSheet_nonExistentName_exceptionThrown() {
         CheatSheetList.clear();
         CheatSheet test;
         for (int i = 0; i < 10; i++) {

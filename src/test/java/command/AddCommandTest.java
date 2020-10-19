@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 class AddCommandTest {
     @Test
-    void execute() {
+    void execute_completeInput_success() {
         final String userInput = "/add /n name /l language /d details";
         CheatSheetList.clear();
         try {
