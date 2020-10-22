@@ -2,6 +2,7 @@ package ui;
 
 import cheatsheet.CheatSheet;
 import cheatsheet.CheatSheetList;
+import exception.CommandException;
 
 /*
  * Handles printing of all outputs
@@ -100,12 +101,17 @@ public class Printer {
     }
 
     public static void printCheatSheetList() {
-        for (int i = 1; i <= CheatSheetList.getSize(); i++) {
-            System.out.println("\t"
-                    + i + ". " + CheatSheetList.getCheatSheet(i).getCheatSheetName()
-                    + " (Language: " + CheatSheetList.getCheatSheet(i).getCheatSheetProgrammingLanguage() + ")"
-                    + " (Details: " + CheatSheetList.getCheatSheet(i).getCheatSheetDetails() + ")");
+        try {
+            for (int i = 1; i <= CheatSheetList.getSize(); i++) {
+                System.out.println("\t"
+                        + i + ". " + CheatSheetList.getCheatSheet(i).getCheatSheetName()
+                        + " (Language: " + CheatSheetList.getCheatSheet(i).getCheatSheetProgrammingLanguage() + ")"
+                        + " (Details: " + CheatSheetList.getCheatSheet(i).getCheatSheetDetails() + ")");
+            }
+        } catch (CommandException e) {
+            // this will never happen
         }
+
     }
 
     public static void printAddNewCheatSheetMessage(CheatSheet cheatSheet) {
