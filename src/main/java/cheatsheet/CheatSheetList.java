@@ -30,20 +30,6 @@ public class CheatSheetList {
     }
 
     /**
-     * Converts the cheatSheetName attribute for each cheat sheet into a string.
-     * The string will be used by UI for printing
-     *
-     * @return printedByUI The string to be printed by UI
-     */
-    public static String printCheatSheetNames() {
-        StringBuilder printedByUI = new StringBuilder("Current list of cheat sheet:\n");
-        for (CheatSheet cs : cheatSheets) {
-            printedByUI.append(cs.getCheatSheetName()).append("\n");
-        }
-        return printedByUI.toString();
-    }
-
-    /**
      * Adds a new cheat sheet to the list.
      */
     public static void add(CheatSheet cheatSheet) {

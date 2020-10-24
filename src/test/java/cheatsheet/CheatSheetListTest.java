@@ -35,18 +35,6 @@ class CheatSheetListTest {
     }
 
     @Test
-    void testPrintCheatSheetNames() {
-        CheatSheetList.clear();
-        StringBuilder print = new StringBuilder("Current list of cheat sheet:\n");
-        for (int i = 0; i < 10; i++) {
-            CheatSheetList.add(new CheatSheet("Name" + i, "Language" + i, "Details" + i));
-            print.append("Name").append(i).append("\n");
-        }
-        assertEquals(print.toString(), CheatSheetList.printCheatSheetNames());
-        logger.log(Level.INFO, "Finished PrintCheatSheetName test");
-    }
-
-    @Test
     void testAdd() {
         CheatSheetList.clear();
         for (int i = 0; i < 10; i++) {
