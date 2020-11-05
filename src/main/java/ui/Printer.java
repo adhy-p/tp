@@ -189,8 +189,12 @@ public final class Printer {
         printCheatSheet(cheatSheet);
     }
 
-    public void printFavouritedCheatSheetMessage(CheatSheet cheatSheet) {
-        print(textColor + "This cheat sheet has been favourited: " + reset);
+    public void printFavouritedCheatSheetMessage(CheatSheet cheatSheet, boolean isAddFav) {
+        if (isAddFav) {
+            print(textColor + "This cheat sheet has been added to favourites: " + reset);
+        } else {
+            print(textColor + "This cheat sheet has been removed from favourites: " + reset);
+        }
         printCheatSheet(cheatSheet);
     }
 
