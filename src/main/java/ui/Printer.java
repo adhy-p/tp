@@ -122,7 +122,13 @@ public final class Printer {
                 + reset + NEWLINE
                 + ConsoleColorsEnum.BOLD + "" + favColor + "/fav /n <CHEAT_SHEET_NAME>"
                 + reset + NEWLINE
-                + "\tMarks the cheat sheet as favourite." + NEWLINE
+                + "\tAdds the cheat sheet to favourites." + NEWLINE
+
+                + ConsoleColorsEnum.BOLD + "" + logoColor + "/fav /i <CHEAT_SHEET_INDEX> /d"
+                + reset + NEWLINE
+                + ConsoleColorsEnum.BOLD + "" + favColor + "/fav /n <CHEAT_SHEET_NAME> /d"
+                + reset + NEWLINE
+                + "\tRemoves the cheat sheet from favourites." + NEWLINE
 
                 + ConsoleColorsEnum.BOLD + "" + logoColor + "/find /s <SUBJECT> /k <KEYWORD>"
                 + reset + NEWLINE
