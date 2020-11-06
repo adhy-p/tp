@@ -34,8 +34,8 @@ public class UserSession {
         ui = new Ui();
         printer = new Printer();
         settings = new Settings(printer);
-        fileReader = new DataFileReader(printer, cheatSheetList);
-        fileWriter = new DataFileWriter(printer, cheatSheetList);
+        fileReader = new DataFileReader(settings, printer, cheatSheetList);
+        fileWriter = new DataFileWriter(settings, printer, cheatSheetList);
 
         fileDestroyer = new DataFileDestroyer(printer, cheatSheetList);
         userCommandParser = new Parser(cheatSheetList, editor, fileDestroyer, printer, ui, settings);
