@@ -436,4 +436,14 @@ public final class Printer {
                 + NEWLINE + "Type Y or Yes to confirm, or any other character to cancel"
                 + ConsoleColorsEnum.RESET_TEXT);
     }
+
+    public void printSetDisplayingHelpMessages(boolean isDisplayingHelpMessages) {
+        if (isDisplayingHelpMessages) {
+            print("You have enabled the help messages."
+                    + NEWLINE + "You can disable the help messages using \"/set /m remove\"\n");
+        } else {
+            print("You have disabled the help messages."
+                    + NEWLINE + "You can re-enable it again using \"/set /m include\"\n");
+        }
+    }
 }

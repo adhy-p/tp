@@ -15,6 +15,7 @@ public class Settings {
 
     public void setDisplayingHelpMessages(boolean isDisplayingHelpMessages) {
         this.isDisplayingHelpMessages = isDisplayingHelpMessages;
+        printer.printSetDisplayingHelpMessages(isDisplayingHelpMessages);
     }
 
     public int getColorOption() {
@@ -33,6 +34,5 @@ public class Settings {
             colorOption = 0;
         }
         printer.setColor(option);
-        printer.printSetColorMessage(option);
     }
 }
