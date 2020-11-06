@@ -60,7 +60,7 @@ public class DataFileWriterTest extends DataFileTest {
 
         testCheatSheetList.clear();
 
-        int directoryFiles = userDirectoryFiles != null ? userDirectoryFiles.length : 0;
+        int directoryFiles = userDirectoryFiles != null ? userDirectoryFiles.length : 1;
         assertEquals(expectedFiles, directoryFiles);
     }
 
