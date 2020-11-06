@@ -33,7 +33,7 @@ public class UserSession {
         editor = new Editor();
         ui = new Ui();
         printer = new Printer();
-        settings = new Settings();
+        settings = new Settings(printer);
         fileReader = new DataFileReader(printer, cheatSheetList);
         fileWriter = new DataFileWriter(printer, cheatSheetList);
 

@@ -8,7 +8,7 @@ import ui.Printer;
 
 /**
  * Command to change the behavior of the application.
- * Currently only supports changing default color scheme.
+ * Currently only supports changing default color scheme and behavior of welcome message.
  */
 public class SettingsCommand extends Command {
     private Settings settings;
@@ -16,7 +16,7 @@ public class SettingsCommand extends Command {
 
     /**
      * Constructor for the SettingsCommand.
-     * Required argument: COLORSCHEME.
+     * Required argument: either COLORSCHEME or HELPMESSAGE.
      *
      * @param printer The printer object to handle user interaction
      */
@@ -39,16 +39,16 @@ public class SettingsCommand extends Command {
         if (flagsToDescriptions.get(CommandFlag.COLORSCHEME) != null) {
             try {
                 int option = Integer.parseInt(flagsToDescriptions.get(CommandFlag.COLORSCHEME));
-                printer.setColor(option);
+                settings.setColor(option);
             } catch (NumberFormatException e) {
                 throw new CommandException("Please enter a valid option");
             }
         }
         if (flagsToDescriptions.get(CommandFlag.HELPMESSAGE) != null) {
             String option = flagsToDescriptions.get(CommandFlag.HELPMESSAGE);
-            if (option.equals("remove")) {
+            if (option.toLowerCase().equals("remove")) {
                 settings.setDisplayingHelpMessages(false);
-            } else if (option.equals("include")) {
+            } else if (option.toLowerCase().equals("include")) {
                 settings.setDisplayingHelpMessages(true);
             } else {
                 throw new CommandException("Please enter a valid option (\"remove\" or \"include\")");
