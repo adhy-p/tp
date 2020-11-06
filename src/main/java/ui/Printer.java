@@ -2,13 +2,21 @@ package ui;
 
 import cheatsheet.CheatSheet;
 import cheatsheet.CheatSheetList;
-import command.Command;
 import parser.CommandFlag;
+import command.AddCommand;
+import command.ClearCommand;
+import command.Command;
+import command.DeleteCommand;
+import command.EditCommand;
+import command.FindCommand;
+import command.ListCommand;
+
 
 /**
  * This class manages the output of text.
  */
 public final class Printer {
+
     private static final String LINE = "----------------------------------------------------------------"
             + "----------------------------------------";
     private static final String NEWLINE = System.lineSeparator();
@@ -19,6 +27,7 @@ public final class Printer {
     public ConsoleColorsEnum nameColor;
     public ConsoleColorsEnum subjectColor;
     public ConsoleColorsEnum detailsColor;
+    public ConsoleColorsEnum alertColor;
     public ConsoleColorsEnum reset;
 
     public Printer() {
@@ -28,6 +37,7 @@ public final class Printer {
         nameColor = ConsoleColorsEnum.BRIGHT_CYAN_TEXT;
         subjectColor = ConsoleColorsEnum.BRIGHT_BLUE_TEXT;
         detailsColor = ConsoleColorsEnum.WHITE_TEXT;
+        alertColor = ConsoleColorsEnum.BOLD_RED_TEXT;
         reset = ConsoleColorsEnum.WHITE_TEXT;
     }
 
@@ -89,12 +99,8 @@ public final class Printer {
         print(LINE + "" + NEWLINE + NEWLINE + "Please enter a Command:");
     }
 
-    public void printWhiteSpace() {
-        print(" ");
-    }
-
     public void printHelpSheet() {
-        print(ConsoleColorsEnum.BOLD + "" + logoColor + "/add /n <CHEAT_SHEET_NAME> /s<SUBJECT>"
+        print(ConsoleColorsEnum.BOLD + "" + logoColor + "/add /n <CHEAT_SHEET_NAME> /s <SUBJECT>"
                 + reset + NEWLINE
                 + "\tAdds a new cheat sheet to the application and prompts user to include data" + NEWLINE
                 + "\tinto the cheat sheet." + NEWLINE
@@ -124,7 +130,13 @@ public final class Printer {
                 + reset + NEWLINE
                 + ConsoleColorsEnum.BOLD + "" + favColor + "/fav /n <CHEAT_SHEET_NAME>"
                 + reset + NEWLINE
-                + "\tMarks the cheat sheet as favourite." + NEWLINE
+                + "\tAdds the cheat sheet to favourites." + NEWLINE
+
+                + ConsoleColorsEnum.BOLD + "" + logoColor + "/fav /i <CHEAT_SHEET_INDEX> /d"
+                + reset + NEWLINE
+                + ConsoleColorsEnum.BOLD + "" + favColor + "/fav /n <CHEAT_SHEET_NAME> /d"
+                + reset + NEWLINE
+                + "\tRemoves the cheat sheet from favourites." + NEWLINE
 
                 + ConsoleColorsEnum.BOLD + "" + logoColor + "/find /s <SUBJECT> /k <KEYWORD>"
                 + reset + NEWLINE
@@ -153,19 +165,8 @@ public final class Printer {
     public void printCheatSheet(CheatSheet cheatSheet) {
         print(nameColor + "\tName: " + cheatSheet.getName() + NEWLINE
                 + subjectColor + "\tSubject: " + cheatSheet.getSubject() + NEWLINE
-                + detailsColor + "\tDetails: " + cheatSheet.getDetails() + reset);
-    }
-
-    public void printCheatSheetList(CheatSheetList cheatSheetList) {
-        int i = 0;
-        for (CheatSheet cs : cheatSheetList.getList()) {
-            print("\t"
-                    + (++i) + ". " + nameColor + cs.getName() + reset
-                    + " (Subject: " + subjectColor
-                    + cs.getSubject() + reset + ")"
-                    + (cs.getIsFavourite() ? favColor + " *\n" : "\n")
-                    + reset);
-        }
+                + detailsColor + "\tDetails: " + cheatSheet.getWrappedDetails()
+                + reset);
     }
 
     public void printCheatSheetSize(CheatSheetList cheatSheetList) {
@@ -185,6 +186,11 @@ public final class Printer {
         print("Now you have no cheatsheets" + reset);
     }
 
+    public void printDeleteConfirmation(CheatSheet cheatSheet) {
+        print(alertColor + "Are you sure to delete the" + cheatSheet.getName() + " cheatsheet?" + NEWLINE
+                + "Type Y or Yes to confirm, or any other character to cancel" + reset);
+    }
+
     public void printDeleteCheatSheetMessage(CheatSheet cheatSheet, CheatSheetList cheatSheetList) {
         print(textColor + "This cheat sheet has been deleted: " + reset);
         printCheatSheet(cheatSheet);
@@ -197,8 +203,12 @@ public final class Printer {
         printCheatSheet(cheatSheet);
     }
 
-    public void printFavouritedCheatSheetMessage(CheatSheet cheatSheet) {
-        print(textColor + "This cheat sheet has been favourited: " + reset);
+    public void printFavouritedCheatSheetMessage(CheatSheet cheatSheet, boolean isAddFav) {
+        if (isAddFav) {
+            print(textColor + "This cheat sheet has been added to favourites: " + reset);
+        } else {
+            print(textColor + "This cheat sheet has been removed from favourites: " + reset);
+        }
         printCheatSheet(cheatSheet);
     }
 
@@ -225,6 +235,7 @@ public final class Printer {
             nameColor = ConsoleColorsEnum.BRIGHT_MAGENTA_TEXT;
             subjectColor = ConsoleColorsEnum.BOLD_MAGENTA_TEXT;
             detailsColor = ConsoleColorsEnum.WHITE_TEXT;
+            alertColor = ConsoleColorsEnum.BOLD_RED_TEXT;
             reset = ConsoleColorsEnum.WHITE_TEXT;
             break;
         case 2:
@@ -234,6 +245,7 @@ public final class Printer {
             nameColor = ConsoleColorsEnum.BRIGHT_RED_TEXT;
             subjectColor = ConsoleColorsEnum.BOLD_YELLOW_TEXT;
             detailsColor = ConsoleColorsEnum.WHITE_TEXT;
+            alertColor = ConsoleColorsEnum.BOLD_RED_TEXT;
             reset = ConsoleColorsEnum.WHITE_TEXT;
             break;
         case 3:
@@ -243,6 +255,7 @@ public final class Printer {
             nameColor = ConsoleColorsEnum.BOLD_WHITE_TEXT;
             subjectColor = ConsoleColorsEnum.WHITE_TEXT;
             detailsColor = ConsoleColorsEnum.WHITE_TEXT;
+            alertColor = ConsoleColorsEnum.BOLD_RED_TEXT;
             reset = ConsoleColorsEnum.WHITE_TEXT;
             break;
         default:
@@ -252,14 +265,23 @@ public final class Printer {
             nameColor = ConsoleColorsEnum.BRIGHT_CYAN_TEXT;
             subjectColor = ConsoleColorsEnum.BRIGHT_BLUE_TEXT;
             detailsColor = ConsoleColorsEnum.WHITE_TEXT;
+            alertColor = ConsoleColorsEnum.BOLD_RED_TEXT;
             reset = ConsoleColorsEnum.WHITE_TEXT;
             break;
         }
-        print("Changed color scheme to option " + option + ":\n"
-                + favColor + "\tColor 1\n"
-                + nameColor + "\tColor 2\n"
-                + subjectColor + "\tColor 3\n"
-                + reset);
+        if (option < 0 || option > 3) {
+            print("Invalid option " + option + ". Changed color scheme to default colors:\n"
+                    + favColor + "\tColor 1\n"
+                    + nameColor + "\tColor 2\n"
+                    + subjectColor + "\tColor 3\n"
+                    + reset);
+        } else {
+            print("Changed color scheme to option " + option + ":\n"
+                    + favColor + "\tColor 1\n"
+                    + nameColor + "\tColor 2\n"
+                    + subjectColor + "\tColor 3\n"
+                    + reset);
+        }
     }
 
     // prints all colors, for debugging purposes only
@@ -295,5 +317,119 @@ public final class Printer {
         print(ConsoleColorsEnum.MAGENTA_TEXT + "TEST\n" + reset);
         print(ConsoleColorsEnum.BRIGHT_MAGENTA_TEXT + "TEST\n" + reset);
         print(ConsoleColorsEnum.BOLD_MAGENTA_TEXT + "TEST\n" + reset);
+    }
+
+    public void printStartHelpMessage() {
+        print(ConsoleColorsEnum.BRIGHT_YELLOW_TEXT
+            + NEWLINE + "Here are some basics commands to get you started: "
+            + NEWLINE + "\t\"/add\": Add your own cheat sheet"
+            + NEWLINE + "\t\"/list\": List all cheat sheet you currently own, including those we preloaded for you"
+            + NEWLINE + "\t\"/view\": View the contents of a specific cheat sheet, we recommend you to use the list "
+            + "command before this. "
+            + NEWLINE + "\t\t\t You can view the contents using cheat sheet index or name."
+            + NEWLINE + "Enter \"/help\" to see the details of all commands"
+            + ConsoleColorsEnum.RESET_TEXT);
+    }
+
+    private void printRepeatedHelpMessagePartOne(String commandType) {
+        print(ConsoleColorsEnum.BRIGHT_YELLOW_TEXT
+            + "The " + commandType + " does not work alone."
+            + NEWLINE + "We need some necessary information from you before we could add your cheat sheet."
+            + NEWLINE + "Don't worry, you do not have to enter the command again."
+            + NEWLINE + "We would prompt you to enter the necessary information, one by one."
+            + ConsoleColorsEnum.RESET_TEXT);
+    }
+
+    private void printRepeatedHelpMessagePartTwo() {
+        print(ConsoleColorsEnum.BRIGHT_YELLOW_TEXT
+            + "You also could enter the full command next time if you do not wish to be prompted to enter fields "
+            + "one by one"
+            + NEWLINE + "\"/help\" to see more details on the structure of full command."
+            + NEWLINE + "To stop messages like this from appearing again, input this command: \"/set /m remove\""
+            + ConsoleColorsEnum.RESET_TEXT);
+    }
+
+    public void printCommandHelpMessage(Class commandClass) {
+        if (commandClass.equals(AddCommand.class)) {
+            printAddCommandHelpMessage();
+        } else if (commandClass.equals(ClearCommand.class)) {
+            printClearCommandHelpMessage();
+        } else if (commandClass.equals(DeleteCommand.class)) {
+            printDeleteCommandHelpMessage();
+        } else if (commandClass.equals(EditCommand.class)) {
+            printEditCommandHelpMessage();
+        } else if (commandClass.equals(FindCommand.class)) {
+            printFindCommandHelpMessage();
+        } else if (commandClass.equals(ListCommand.class)) {
+            printListCommandHelpMessage();
+        }
+    }
+
+    private void printAddCommandHelpMessage() {
+        printRepeatedHelpMessagePartOne("ADD");
+        print(ConsoleColorsEnum.BRIGHT_YELLOW_TEXT
+            + "NAME is necessary while SUBJECT isn't. <<enter>> to skip field."
+            + NEWLINE + "We will automatically assign \"Unsorted\" as subject if no subject is provided."
+            + NEWLINE
+            + ConsoleColorsEnum.RESET_TEXT);
+        printRepeatedHelpMessagePartTwo();
+    }
+
+    private void printClearCommandHelpMessage() {
+        print(ConsoleColorsEnum.BRIGHT_YELLOW_TEXT
+            + "The CLEAR command clears ALL cheat sheets except for those that are preloaded."
+            + ConsoleColorsEnum.RESET_TEXT);
+    }
+
+    private void printDeleteCommandHelpMessage() {
+        print(ConsoleColorsEnum.BRIGHT_YELLOW_TEXT
+            + "The DELETE command deletes a cheatsheet you specifies."
+            + ConsoleColorsEnum.RESET_TEXT);
+        printRepeatedHelpMessagePartOne("DELETE");
+        print(ConsoleColorsEnum.BRIGHT_YELLOW_TEXT
+            + "We need you to either input NAME or INDEX. <<enter>> to skip field."
+            + NEWLINE
+            + ConsoleColorsEnum.RESET_TEXT);
+        printRepeatedHelpMessagePartTwo();
+    }
+
+    private void printEditCommandHelpMessage() {
+        print(ConsoleColorsEnum.BRIGHT_YELLOW_TEXT
+            + "The EDIT command edits an existing cheat sheet."
+            + ConsoleColorsEnum.RESET_TEXT);
+        printRepeatedHelpMessagePartOne("EDIT");
+        print(ConsoleColorsEnum.BRIGHT_YELLOW_TEXT
+            + "We need you to input either NAME or INDEX. <<enter>> to skip field."
+            + NEWLINE
+            + ConsoleColorsEnum.RESET_TEXT);
+        printRepeatedHelpMessagePartTwo();
+    }
+
+    private void printFindCommandHelpMessage() {
+        print(ConsoleColorsEnum.BRIGHT_YELLOW_TEXT
+            + "The EDIT command finds an existing cheat sheet based on information provided."
+            + ConsoleColorsEnum.RESET_TEXT);
+        printRepeatedHelpMessagePartOne("FIND");
+        print(ConsoleColorsEnum.BRIGHT_YELLOW_TEXT
+            + "We need you to input NAME, SUBJECT, or KEYWORD in cheatsheet or any combinations of these fields."
+            + "<<enter>> to skip field."
+            + NEWLINE
+            + ConsoleColorsEnum.RESET_TEXT);
+        printRepeatedHelpMessagePartTwo();
+    }
+
+    private void printListCommandHelpMessage() {
+        print(ConsoleColorsEnum.BRIGHT_YELLOW_TEXT
+            + "The LIST command lists all current existing cheat sheets."
+            + NEWLINE + "You could also sort the cheat sheets according to name or subject"
+            + NEWLINE + "To stop messages like from appearing again, input this command: \"/set /m remove\""
+            + ConsoleColorsEnum.RESET_TEXT);
+    }
+
+    public void printClearConfirmation() {
+        print(ConsoleColorsEnum.BRIGHT_YELLOW_TEXT
+            + "Are you sure you want to delete all your cheat sheets"
+            + NEWLINE + "Type Y or Yes to confirm, or any other character to cancel"
+            + ConsoleColorsEnum.RESET_TEXT);
     }
 }

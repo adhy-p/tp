@@ -32,24 +32,34 @@ The table of contents below lets you easily access the documentation for install
 * [3. GUI text editor](#editor)
 * [4. Commands](#commands)
    * [4.1. Storage commands](#storage-command-type)
-     * [4.1.1. Adding a cheatsheet: `/add`](#add-command)
+   	  * [4.1.1. Adding a cheatsheet: `/add`](#add-command)
 	  * [4.1.2. Deleting a cheatsheet: `/delete`](#delete-command)
 	  * [4.1.3. Clearing all entries: `/clear`](#clear-command)
   * [4.2.  Manipulation commands](#manipulation-command-type)
-	* [4.2.1. Editing a cheatsheet: `/edit` ](#edit-command)
-	* [4.2.2. Favouriting a cheatsheet: `/fav` ](#favourite-command)
+	  * [4.2.1. Editing a cheatsheet: `/edit` ](#edit-command)
+	  * [4.2.2. Favouriting a cheatsheet: `/fav` ](#favourite-command)
   * [4.3.  Viewing commands](#viewing-command-type)
-	* [4.3.1. Locating a cheatsheet by name: `/find`](#find-command)
-	* [4.3.2. Viewing the cheatsheet: `/view`](#view-command)
-	* [4.3.3. Listing all cheatsheets: `/list`](#list-command)
+	 * [4.3.1. Locating a cheatsheet by name: `/find`](#find-command)
+	 * [4.3.2. Viewing the cheatsheet: `/view`](#view-command)
+	 * [4.3.3. Listing all cheatsheets: `/list`](#list-command)
   * [4.4.  General commands](#general-command-type)
-	  * [4.4.1. Viewing help: `/help`](#help-command)
-	  * [4.4.2. Change program settings: `/set`](#settings-command)
-	  * [4.4.3. Exiting the program: `/exit`](#exit-command)
+	 * [4.4.1. Viewing help: `/help`](#help-command)
+	 * [4.4.2. Change program settings: `/set`](#settings-command)
+	 * [4.4.3. Exiting the program: `/exit`](#exit-command)
 * [5. Data storage](#data-storage)
-* [6. Archiving data files](#archiving-data-files)
-* [7. FAQ](#faq)
-* [8. Command Cheatsheet](#command-cheatsheet)
+  * [5.1 Data file contents](#data-file-contents)
+	  * [5.1.1. XML file configurations](#xml-file-configurations)  
+	  * [5.1.2. Main](#main) 	
+	  * [5.1.3. Favourite](#favourite) 
+	  * [5.1.4. Subject](#subject) 
+	  * [5.1.5. Contents](#contents) 	
+  * [5.2 Data file organization](#data-file-organization)
+  * [5.3 Preloaded data files](#preloaded-data-files)  
+  * [5.4 Reading data files](#reading-data-files)
+  * [5.5 Writing data files](#writing-data-files)  	   
+  * [5.6 Deleting data files](#deleting-data-files)  	     	    	  	    
+* [6. FAQ](#faq)
+* [7. Command Cheatsheet](#command-cheatsheet)
 
 <br>
 
@@ -64,6 +74,7 @@ CheatLogs requires Java 11 or above installed on your computer. You can follow t
 	 * For computers on Windows, invoke`java -version` on the command prompt.
 	 * For MacOs or Linux distros, invoke `java -version` on your terminal of choice.
 4. Verify that the version installed follows the "11.x.x" format. Refer to the image below for what you should expect to see.
+
 ![Java 11 installed message](https://i.ibb.co/tzV9GX3/image.png)
 
 <br>
@@ -155,36 +166,64 @@ This is one of the most used command type in CheatLogs. They allow you to manage
 ___
 
 <a id="add-command"></a>
-### 4.1.1. Adding a cheatsheet: `/add` <font size="5"> [:arrow_up_small:](#table-of-contents)</font>
+### 4.1.1. Adding a cheatsheet: `/add` <font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
+You can easily use the **/add** command to add your own cheat sheets to the list by using 2 different methods **easy** and **hard** mode.
+#### 4.1.1.1 Adding a cheatsheet using the easy mode
+> Format: `/add`
 
->Format: `/add /n CHEATSHEET_NAME /s SUBJECT` <br>
->Flag optionality: `/n`(required), `/s` (optional)
+The first method that you can use to add cheatsheet is the easy mode. Just type `/add` without adding any flag or description. 
+You will be prompted to fill in the `NAME` and the `SUBJECT` of your cheatsheet.
 
-A cheatsheet is first constructed with the name `CHEATSHEET_NAME` and subject `SUBJECT`. The Editor will then pop up for you to enter the description of the cheatsheet.
+Shortly after, a window will pop up to show the editing window.
+Enter the details of your cheatsheet there, then click `Actions` then `Save`
+
+![image](https://i.ibb.co/n01kQ4Y/carbon.png)
+
+Congratulations! You have added your first cheatsheet into CheatLogs.
+
+#### 4.1.1.2 Adding a cheatsheet using the advanced mode
+>Format: `/add /n <CHEATSHEET_NAME> /s <SUBJECT>` <br>
+>Flag optionality: `/n` (required)`/s` (optional)
+>
+For the more advanced users, you can also add cheatsheets using the advanced command. A cheatsheet is first constructed with the name `CHEATSHEET_NAME` and subject `SUBJECT`. The Editor will then pop up for you to enter the description of the cheatsheet.
 
 If a non-empty description is saved, the cheatsheet is added to the List and stored to the */data* folder in the jar file directory. The expected outcome should be similar to below.
+
 ![image](https://i.ibb.co/hV499yH/image.png)
 Else if the description is blank or the Editor was canceled, the error message below is shown and the cheatsheet is not saved.
  ![image](https://i.ibb.co/qxkMwtV/image.png)
 
 If you try to enter a cheatsheet with a name already in the List. You will get a message to input another one, this is depicted below.
+
 ![image](https://i.ibb.co/mhgrwN0/image.png)
 
 Examples:
 * `/add /n classes s/Java`
 * `/add /n Cppthings`
 
-____
+Shortly after, an editing window will pop up to show the editing window.
+Enter the details of your cheatsheet there, then click `Actions` then `Save`
 
+If you want to clear the editing area, clck `Actions` then click `Clear All`
  <a id="delete-command"></a>
-### 4.1.2. Deleting a cheatsheet: `/delete`<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
+ 
+#### 4.1.2. Deleting a cheatsheet: `/delete`<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
+From the previous subsection, we learned how to add a cheatsheet into CheatLogs. 
+
+In this section, you can learn how to use the `/delete` function.
+
+To be used after using /list, Deletes the cheatsheet at INDEX items down the list. The first cheatsheet has an index of 1. This cheatsheet will be deleted from the /data folder.
+ 
+Format 1: `/delete i/INDEX`
 
 >Format: `/delete /n CHEATSHEET_NAME /i CHEATSHEET_INDEX` <br>
 >Flag optionality: [`/n`, `/i`] (At least one)
 
 Deletes the matching cheatsheet from the List with name matching `CHEATSHEET_NAME` or index matching `CHEATSHEET_INDEX` whichever you included or you included both. The expected result is similar to below if a matching cheatsheet is found.
+
 ![image](https://i.ibb.co/jLrwh03/image.png)
 When either the name or index do not match, CheatLogs will specify the error as shown below.
+
 ![image](https://i.ibb.co/xHW7tLf/image.png)
 
 
@@ -201,7 +240,9 @@ ___
 >
 If you want to reset everything to its original state, you can simply use the `/clear` command instead of using `/delete` multiple times.
 This command will delete all cheatsheets from the List on your CheatLogs. No need to worry, `/clear` command will not remove the preloaded cheat sheets.
-Here is the expected result if currently you have two cheat sheets stored in the application.![image](https://i.ibb.co/sq8nkp8/image.png)
+Here is the expected result if currently you have two cheat sheets stored in the application.
+
+![image](https://i.ibb.co/sq8nkp8/image.png)
 Example:
 * `/clear`
 ___
@@ -220,11 +261,14 @@ ___
 >Flag optionality: [`/n`, `/i`] (At least one)
 
 After `/edit` command is called, the Editor will pop up and then you can edit the cheatsheet in the List with name matching `CHEATSHEET_NAME` or index matching `CHEATSHEET_INDEX` whichever you included (it will try to match the name if you included both). After you are done editing and close the Editor, the expected result is similar to below if a matching cheatsheet is found and the edited description is not blank.
+
 ![image](https://i.ibb.co/c8xq2wY/image.png)
 When either the name or index do not match, the Editor does not pop up and CheatLogs will specify the error as shown below.
+
 ![image](https://i.ibb.co/rZ6Rhgn/image.png)
 
 CheatLogs does not allow you to save empty saved descriptions. In this case, the cheatsheet is not saved and maintains its previous details. Below is the error message shown on the CLI.
+
 ![image](https://i.ibb.co/5k953cy/image.png)
 Examples:
 * `/edit/n switch /i 2`
@@ -239,11 +283,14 @@ ____
 >Format: `/fav /n CHEATSHEET_NAME /i CHEATSHEET_INDEX` <br>
 >Flag optionality: [`/n`, `/i`] (At least one)
 
-If you have some cheat sheets which are used frequently, you can mark them as favourite so that those cheat sheets will be always displayed on the top of the List. `/fav` marks the cheatsheet with name matching `CHEATSHEET_NAME` or index matching `CHEATSHEET_INDEX` whichever you included or both if you included both.  The expected result is similar to below if a matching cheatsheet is found.
+If you have some cheat sheets which are used frequently, you can mark them as favourite so that those cheat sheets will always be displayed on the top of the List. `/fav` marks the cheatsheet with name matching `CHEATSHEET_NAME` or index matching `CHEATSHEET_INDEX` whichever you included or both if you included both.  The expected result is similar to below if a matching cheatsheet is found.
+
 ![image](https://i.ibb.co/VW5JZNx/image.png)
 When either the name or index do not match, Cheatlogs will specify the error as shown below.
+
 ![image](https://i.ibb.co/vPgbnbW/image.png)
 Favourted cheatsheets show up a the top of  `/list` command table, with an [*] beside it's name as shown below beside `loops`.  This allows you to easily identify your favourite cheatsheets. 
+
 ![image](https://i.ibb.co/XWztfyX/image.png)
 Examples:
 * `/fav/n Integer /i 2`
@@ -256,17 +303,19 @@ ___
 <a id="viewing-command-type"></a>
 ## 4.3. Viewing Commands: <font size="5"> [:arrow_up_small:](#table-of-contents)</font>
 
-These are commands that allow you to quickly look up the List for the cheatsheets you want.
-
-  
+These are commands that allow you to quickly look up the List for the cheatsheets you want. It is recommended to use one command after another.
+E.g. Using `/find` to list all matching cheat lists then `/view` with corresponding name to view the cheat sheet.
 
 Some of these commands present their results in a table form and allow you to sort the results through various filters provided. We will call this **Sorting Mode**.
 
-  
-
-In Sorting Mode, cheat sheets are originally shown in the order they were found inside the List. You can then sort them in [lexicographical order](https://en.wikipedia.org/wiki/Lexicographic_order#:~:text=In%20mathematics%2C%20the%20lexicographic%20or,of%20a%20totally%20ordered%20set.) according to any of the cheatsheet properties. For example , sorting by descending name means to enter`3`in this mode and an illustration of expected output is the image below. To exit this mode, enter anything that is not valid.
+In Sorting Mode, cheat sheets are originally shown in the order they were found inside the List. You can then sort them in [lexicographical order](https://en.wikipedia.org/wiki/Lexicographic_order#:~:text=In%20mathematics%2C%20the%20lexicographic%20or,of%20a%20totally%20ordered%20set.) 
+according to any of the cheatsheet properties. For example , sorting by descending name means to enter`3`in this mode and an illustration of expected output is the image below. To exit this mode, enter anything that is not valid.
 
 ![image](https://i.ibb.co/F7fHTvs/image.png)
+
+> :bulb:  Viewing/Deleting cheat sheets using index
+> * Index of cheat sheets after sorting in `/list` command can be used to delete/view corresponding cheat sheets
+> * However, index of cheat sheets in `/find` command cannot be used to delete/view cheat sheets. You would have to delete/view them using the name.
 
 ---
 
@@ -277,11 +326,14 @@ In Sorting Mode, cheat sheets are originally shown in the order they were found 
 >Format: `/find /s <SUBJECT> /k <KEYWORD>` <br>
 >Flag optionality: [`/s`, `/k`] (At least one)
 
-Matches and displays a table of cheatsheets from the List whose subject contains `SUBJECT` or description contains `KEYWORD` whichever you included or both if you included both. The expected result is similar to below if matching cheatsheets are found.![image](https://i.ibb.co/7N3w0wQ/image.png)
+Matches and displays a table of cheatsheets from the List whose subject contains `SUBJECT` or description contains `KEYWORD` whichever you included or both if you included both. The expected result is similar to below if matching cheatsheets are found.
+
+![image](https://i.ibb.co/7N3w0wQ/image.png)
 
 CheatLogs then enters Sorting Mode. And resumes after you end it.![image](https://i.ibb.co/7N3w0wQ/image.png)
 
 If there are no matches, the output is similar to below and CheatLogs does not enter Sorting Mode.
+
 ![image](https://i.ibb.co/t2MT44f/image.png)
 
 > :bulb:  Notes on matching algorithm
@@ -297,18 +349,19 @@ Examples:
  
 <a id="view-command"></a>
 ### 4.3.2. Viewing a specific cheatsheet: `/view`<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
->Format: `/view/n CHEATSHEET_NAME /i CHEATSHEET_INDEX` <br>
+>Format: `/view /n CHEATSHEET_NAME /i CHEATSHEET_INDEX` <br>
 >Flag optionality: [`/n`, `/i`] (At least one)
 
 Views and prints the details of the cheatsheet with name matching `CHEATSHEET_NAME` or index matching `CHEATSHEET_INDEX` whichever you included or both if you included both.  The expected result is similar to below if a matching cheatsheet is found.
 
 ![image](https://i.ibb.co/9ZttT68/image.png)
 When either the name or index do not match, CheatLogs will specify the error as shown below.
+
 ![image](https://i.ibb.co/28XQVZL/image.png)
 Examples:
-* `/view/n Read /i 2`
-* `/view/i 1` 
-* `/view/n documentation`
+* `/view /n Read /i 2`
+* `/view /i 1` 
+* `/view /n documentation`
 
 ---
 
@@ -317,13 +370,15 @@ Examples:
 
 >Format: `/list`
 
-Lists all the cheatsheets in the List in a table. CheatLogs then enters sorting mode. The program continues after returning. The image below illustrated what you may see after executing the command successfully.
+Lists all the cheatsheets in the List in a table. CheatLogs then enters sorting mode. 
+In sorting mode, CheatLogs accepts a number (1-4) and will sort accordingly to the prompt message shown in the image below. Any other characters will exit sorting mode.
+The program continues after exiting sorting mode. The image below illustrated what you may see after executing the command successfully.
  ![image](https://i.ibb.co/C7ztqZz/image.png)
 Example:
  *  `/list`
 
 <a id="general-command-type"></a>
-## 4.4. General Commands:  <font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
+## 4.4. General Commands: (Adhy)  <font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
 These are useful general purpose commands that don't fit into the other categories but are still very useful for you to know.
 
 ---
@@ -332,7 +387,7 @@ These are useful general purpose commands that don't fit into the other categori
 ### 4.4.1 Viewing help: `/help`<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
 >Format: `/help`
 >
-Lists all the possible commands that can be executed in the application and formating information. Below is what you should expect to see.
+If you forgot the syntax of a certain command, you can simply type `/help`. It will list all the possible commands that can be executed in the application together with its format and example. Below is what you should expect to see.
 
 ![image](https://i.ibb.co/ZYn38J5/image.png)
 
@@ -345,11 +400,11 @@ Example:
 >Format: `/set /c COLORSCHEME`
 >Flag optionality: `/c`(required) 
 
-Changes the settings of CheatLogs. Currently, only the color scheme of output text can be changed. You can change to any of the 3 additional color scheme options available numbering from 1 to 3 and CheatLogs switch to the one matching `COLORSCHEME`. The image below shows the result of a successful change.
+CheatLogs is highly customizable. You can use the `/set` command to change the behavior of CheatLogs. Currently, only the color scheme of output text can be changed. You can change to any of the 3 additional color scheme options available numbering from 0 to 3 and CheatLogs switch to the one matching `COLORSCHEME`. The image below shows the result of a successful change.
 
 ![image](https://i.ibb.co/5GFvnHb/image.png)
 
-Settings outside the available range default to color scheme 0.(this behavior is to be changed in future iterations)
+If your flag description `COLORSCHEME` does not fall in the range mentioned above, it will change the color scheme to the default setting (option 0).
 
 > :exclamation: The colors will likely vary depending on the terminal that you use and differ from the one shown. We suggest simply picking the most readable one.
  
@@ -362,35 +417,141 @@ Settings outside the available range default to color scheme 0.(this behavior is
 ### 4.4.3 Exiting the program: `/exit`<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
 >Format: `/exit`
 
-Exits the application. CheatLogs hopes you will open it again.
+If you are done using CheatLogs, simple type `/exit` to close the application. CheatLogs hopes you will open it again.
 
- Examples:   
+![image](https://i.ibb.co/J2RWkRx/image.png)
+
+ Example:   
  * `/exit`
 
 <br>
 
-<a id="data-storage"></a>
-### 5. Data storage<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
 
-Data related to this application is saved in the `/data` folder automatically after 
-any command that changes it is given. 
-There is no need to save manually. 
-You can find this folder in the same directory as `cheatlogs.jar`. 
- 
-To allow the application to safely read the files stored in the `/data` folder, 
-please refrain from modifying them externally. 
-You can edit attributes associated with that cheatsheet through the application itself.
+<a id="data-storage"></a>
+## 5. Data storage<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
+
+CheatLogs provides a robust storage system that works together with certain
+commands to store your cheat sheets for future reference. This ensures that you
+have a directory of cheat sheet files which are organized and can be utilized
+by CheatLogs anytime. Refer to the image below for an example of a cheat sheet
+file.
+
+![image](https://i.ibb.co/RDjGFYZ/xml-File-Example.png)
 
 <br>
 
-<a id="archiving-data-files"></a>
-### 6. Archiving data files [coming in v2.0]<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
-TBC
+<a id="data-file-contents"></a>
+## 5.1 Data file contents<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
+
+Each cheat sheet file uses an XML file format. This file format organizes the contents
+of the file into different sections based on certain attributes of the cheatsheet. The code
+snippet below illustrates the structure of the entire cheat sheet file.
+
+```
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<main>
+    <favourite>STATUS</favourite>
+    <subject>SUBJECT</subject>
+    <contents>
+    CONTENTS
+    </contents>
+</main>
+```
+
+---
+
+<a id="xml-file-configurations"></a>
+### 5.1.1 XML file configurations<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
+
+This section configures the settings of the XML file.
+
+>Format: `<?xml version="1.0" encoding="UTF-8" standalone="no"?>` 
+
+> :exclamation: It is recommended for you to use the exact settings defined by the format above. Any change to this format can result in CheatLogs not converting such files into cheat sheets.
+
+---
+
+<a id="main"></a>
+### 5.1.2 Main<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
+
+This section acts as the root element of the document. CheatLogs analyses the
+sections inside `main` and creates a cheat sheet based on the input given by them.
+
+>Format: `<main>CONTENTS</main>` 
+
+> :bulb:  You can rearrange the order of sections within CONTENTS. CheatLogs does not take the ordering of such sections into account when parsing XML files.
+
+> :exclamation: Any section that is not inserted into CONTENTS will not be included in the cheatsheet.
+
+---
+
+<a id="favourite"></a>
+### 5.1.3 Favourite<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
+
+This section indicates if the cheat sheet should be marked as a favourite.
+
+>Format: `<favourite>STATUS</favourite>`
+
+> :exclamation: If STATUS contains another word than `YES`, the cheatsheet will not be marked as a favourite. 
+
+---
+
+<a id="subject"></a>
+### 5.1.4 Subject<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
+
+This section includes the subject of the cheatsheet.
+
+>Format: `<subject>SUBJECT</subject>`
+
+---
+
+<a id="contents"></a>
+### 5.1.5 Contents<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
+
+This section includes the contents of the cheatsheet.
+>Format: `<contents>CONTENTS</contents>`
+
+
+<a id="data-file-organization"></a>
+## 5.2 Data file organization<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
+
+All the data files can be found in the /data directory, which is located in the same directory as
+CheatLogs.jar. Within /data, the data files are located in the subdirectories whose name matches its
+subject name. This ensures that cheat sheet files are stored within the same subject directory, allowing
+you to locate such files easily.
+
+<a id="preloaded-data-files"></a>
+## 5.3 Preloaded data files<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
+
+CheatLogs.jar contains some example cheat sheet files. These files will be moved over to the /data
+directory when you run the application for the first time. To differentiate these files from your 
+personally created cheatsheets, they are placed under the /preloaded subdirectory . 
+
+<a id="reading-data-files"></a>
+## 5.4 Reading data files<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
+
+Whenever CheatLogs is launched, it will attempt to parse all XML files present in the /data directory and
+use this data to create individual cheat sheets for each file. In the event that a particular XML file 
+cannot be read, it will be skipped over, to ensure that other files can be converted into cheat sheets.
+
+<a id="writing-data-files"></a>
+## 5.5 Writing data files<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
+
+Whenever you give a command to `add` or `edit` a cheatsheet, this feature will be activated. Through this
+feature, CheatLogs will attempt to update all cheatsheet files, creating a new cheat sheet file if a new 
+cheat sheet is created. To ensure that your cheat sheet files
+
+<a id="deleting-data-files"></a>
+## 5.6 Deleting data files<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
+
+When you decide to remove a cheat sheet, CheatLogs will delete the relevant cheat sheet files immediately. After this 
+operation, it will perform a search through the /data directory and delete any subdirectories without any cheat sheet.
+This ensures that your /data file is not cluttered with empty directories.
 
 <br>
 
 <a id="faq"></a>
-## 7. FAQ<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
+## 6. FAQ<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
 **Q**: How do I transfer my data to another computer? <br>
 **A**: You can simply drag and drop the `cheatlogs.jar`  and the `/data` directory in that same folder into the other computer.
 
@@ -403,19 +564,19 @@ TBC
 <br>
 
 <a id="command-cheatsheet"></a>
-## 8. Command Cheatsheet<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
+## 7. Command Cheatsheet<font size="5"> [:arrow_up_small:](#table-of-contents)</font> 
 The table below is for quick and easy reference to the CheatLogs commands with examples of use.
+
 Action | Format | Examples
 -------- | ---------- | ------------
 Add | /add /n <CHEATSHEET_NAME> /s <SUBJECT> | /add /n List /s Java
 Delete | /delete /i <CHEATSHEET_INDEX> <br> /delete /n <CHEATSHEET_NAME> | /delete /n List , /delete /i 1
-Clear | /clear |
+Clear | /clear | /clear
 Edit | /edit /i <CHEATSHEET_INDEX> <br> /edit /n <CHEATSHEET_NAME> | /edit /i 1 , /edit /n List
 Favourite | /fav /i <CHEATSHEET_INDEX> <br> /fav /n <CHEATSHEET_NAME> | /fav /i 2 , /fav /n Cheat
 Find | /find /s <SUBJECT> /k <KEYWORD> | /find /s Java , /find /s Java /k cheater
 View | /view /i <CHEATSHEET_INDEX> <br>/view /n <CHEATSHEET_NAME> | /fav /i 3 , /fav /n List
-List | /list |
-Help | /help |
+List | /list | /list
+Help | /help | /help
 Settings | /set /c <OPTION_NUMBER> | /set /c 1
-Exit | /exit |
-
+Exit | /exit | /exit
