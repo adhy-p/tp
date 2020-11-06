@@ -13,9 +13,11 @@ public class Settings {
         isDisplayingHelpMessages = true;
     }
 
-    public void setDisplayingHelpMessages(boolean isDisplayingHelpMessages) {
+    public void setDisplayingHelpMessages(boolean isDisplayingHelpMessages, boolean isInit) {
         this.isDisplayingHelpMessages = isDisplayingHelpMessages;
-        printer.printSetDisplayingHelpMessages(isDisplayingHelpMessages);
+        if (!isInit) {
+            printer.printSetDisplayingHelpMessages(isDisplayingHelpMessages);
+        }
     }
 
     public int getColorOption() {
@@ -27,12 +29,14 @@ public class Settings {
     }
 
 
-    public void setColor(int option) {
+    public void setColor(int option, boolean isInit) {
         if (option >= 0 && option <= 3) {
             colorOption = option;
         } else {
             colorOption = 0;
         }
-        printer.setColor(option);
+        if (!isInit) {
+            printer.setColor(option);
+        }
     }
 }

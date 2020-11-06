@@ -39,7 +39,7 @@ public class SettingsCommand extends Command {
         if (flagsToDescriptions.get(CommandFlag.COLORSCHEME) != null) {
             try {
                 int option = Integer.parseInt(flagsToDescriptions.get(CommandFlag.COLORSCHEME));
-                settings.setColor(option);
+                settings.setColor(option, false);
             } catch (NumberFormatException e) {
                 throw new CommandException("Please enter a valid option");
             }
@@ -47,9 +47,9 @@ public class SettingsCommand extends Command {
         if (flagsToDescriptions.get(CommandFlag.HELPMESSAGE) != null) {
             String option = flagsToDescriptions.get(CommandFlag.HELPMESSAGE);
             if (option.toLowerCase().equals("remove")) {
-                settings.setDisplayingHelpMessages(false);
+                settings.setDisplayingHelpMessages(false, false);
             } else if (option.toLowerCase().equals("include")) {
-                settings.setDisplayingHelpMessages(true);
+                settings.setDisplayingHelpMessages(true, false);
             } else {
                 throw new CommandException("Please enter a valid option (\"remove\" or \"include\")");
             }

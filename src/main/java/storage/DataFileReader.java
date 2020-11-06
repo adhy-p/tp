@@ -366,9 +366,9 @@ public class DataFileReader extends DataFile {
         String settingType = components[0];
         String settingValue = components[1];
         if (settingType.equals("COLOR")) {
-            settings.setColor(Integer.parseInt(settingValue));
+            settings.setColor(Integer.parseInt(settingValue), true);
         } else if (settingType.equals("HELPMESSAGE")) {
-            settings.setDisplayingHelpMessages(Boolean.parseBoolean(settingValue));
+            settings.setDisplayingHelpMessages(Boolean.parseBoolean(settingValue), true);
         }
     }
 }
