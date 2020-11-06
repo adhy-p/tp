@@ -45,7 +45,9 @@ public class UserSession {
         AnsiConsole.systemInstall();
         fileReader.executeFunction();
         printer.printWelcomeScreen();
-        printer.printStartHelpMessage();
+        if (settings.getDisplayingHelpMessages()) {
+            printer.printStartHelpMessage();
+        }
 
         // Ask for new user input and executes it until user types the exit command
         do {

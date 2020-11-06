@@ -226,6 +226,52 @@ public final class Printer {
         System.out.print(textColor + "Please input " + curArg.name() + ": " + reset);
     }
 
+    public void setColor(int option) {
+        switch (option) {
+        case 1:
+            textColor = ConsoleColorsEnum.WHITE_TEXT;
+            favColor = ConsoleColorsEnum.BRIGHT_GREEN_TEXT;
+            logoColor = ConsoleColorsEnum.BRIGHT_GREEN_TEXT;
+            nameColor = ConsoleColorsEnum.BRIGHT_MAGENTA_TEXT;
+            subjectColor = ConsoleColorsEnum.BOLD_MAGENTA_TEXT;
+            detailsColor = ConsoleColorsEnum.WHITE_TEXT;
+            alertColor = ConsoleColorsEnum.BOLD_RED_TEXT;
+            reset = ConsoleColorsEnum.WHITE_TEXT;
+            break;
+        case 2:
+            textColor = ConsoleColorsEnum.WHITE_TEXT;
+            favColor = ConsoleColorsEnum.BRIGHT_BLUE_TEXT;
+            logoColor = ConsoleColorsEnum.BRIGHT_BLUE_TEXT;
+            nameColor = ConsoleColorsEnum.BRIGHT_RED_TEXT;
+            subjectColor = ConsoleColorsEnum.BOLD_YELLOW_TEXT;
+            detailsColor = ConsoleColorsEnum.WHITE_TEXT;
+            alertColor = ConsoleColorsEnum.BOLD_RED_TEXT;
+            reset = ConsoleColorsEnum.WHITE_TEXT;
+            break;
+        case 3:
+            textColor = ConsoleColorsEnum.WHITE_TEXT;
+            favColor = ConsoleColorsEnum.BOLD_WHITE_TEXT;
+            logoColor = ConsoleColorsEnum.WHITE_TEXT;
+            nameColor = ConsoleColorsEnum.BOLD_WHITE_TEXT;
+            subjectColor = ConsoleColorsEnum.WHITE_TEXT;
+            detailsColor = ConsoleColorsEnum.WHITE_TEXT;
+            alertColor = ConsoleColorsEnum.BOLD_RED_TEXT;
+            reset = ConsoleColorsEnum.WHITE_TEXT;
+            break;
+        default:
+            textColor = ConsoleColorsEnum.WHITE_TEXT;
+            favColor = ConsoleColorsEnum.BRIGHT_YELLOW_TEXT;
+            logoColor = ConsoleColorsEnum.BRIGHT_CYAN_TEXT;
+            nameColor = ConsoleColorsEnum.BRIGHT_CYAN_TEXT;
+            subjectColor = ConsoleColorsEnum.BRIGHT_BLUE_TEXT;
+            detailsColor = ConsoleColorsEnum.WHITE_TEXT;
+            alertColor = ConsoleColorsEnum.BOLD_RED_TEXT;
+            reset = ConsoleColorsEnum.WHITE_TEXT;
+            break;
+        }
+        printSetColorMessage(option);
+    }
+
     public void printSetColorMessage(int option) {
         if (option < 0 || option > 3) {
             print("Invalid option " + option + ". Changed color scheme to default colors:\n"
