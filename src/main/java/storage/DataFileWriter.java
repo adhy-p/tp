@@ -237,6 +237,8 @@ public class DataFileWriter extends DataFile {
 
     /**
      * Writes the save data to data/settings.txt
+     *
+     * @param saveData The settings data in the form of string.
      */
     private void writeToTxtFile(String saveData) throws IOException {
         FileWriter fileWriter = new FileWriter(DATA_DIR + SETTINGS_FILENAME);
