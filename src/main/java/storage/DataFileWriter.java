@@ -222,8 +222,12 @@ public class DataFileWriter extends DataFile {
         boolean isDisplayingHelpMessages = settings.getDisplayingHelpMessages();
         int colorOption = settings.getColorOption();
         StringBuilder saveData = new StringBuilder();
-        saveData.append("COLOR ").append(colorOption).append("\n");
-        saveData.append("HELPMESSAGE ").append(isDisplayingHelpMessages).append("\n");
+        saveData.append("COLOR ")
+                .append(colorOption)
+                .append("\n");
+        saveData.append("HELPMESSAGE ")
+                .append(isDisplayingHelpMessages)
+                .append("\n");
         try {
             writeToTxtFile(saveData.toString());
         } catch (IOException e) {

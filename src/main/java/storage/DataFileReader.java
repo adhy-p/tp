@@ -349,6 +349,9 @@ public class DataFileReader extends DataFile {
 
     /**
      * Reads the save file line by line and passes each line to applySettings method.
+     *
+     * @param settingsFile The file containing the settings save data.
+     * @throws IOException thrown if an I/O error prevents the file from being fully parsed.
      */
     private void loadUserSettings(File settingsFile) throws IOException {
         Scanner scanner = new Scanner(settingsFile);
@@ -359,12 +362,22 @@ public class DataFileReader extends DataFile {
 
     /**
      * Applies the settings retrieved from the settings.txt save file.
+     *
+     * @param serializedSettings The settings save data in the form of strings.
      */
     private void applySettings(String serializedSettings) {
         String[] components = serializedSettings.split(" ");
+        String settingType = "";
+        String settingValue = "";
+
+        try {
+            settingType = components[0];
+            settingValue = components[1];
+        } catch (IndexOutOfBoundsException e) {
+            logger.log(Level.WARNING, "Failed to parse settings. Please delete it manually and try again.");
+        }
+
         assert components.length == 2;
-        String settingType = components[0];
-        String settingValue = components[1];
         if (settingType.equals("COLOR")) {
             settings.setColor(Integer.parseInt(settingValue), true);
         } else if (settingType.equals("HELPMESSAGE")) {
