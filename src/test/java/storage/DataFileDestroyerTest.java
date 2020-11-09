@@ -1,68 +1,80 @@
 package storage;
 
+import cheatsheet.CheatSheet;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DataFileDestroyerTest {
-    Path removeTestDirectory = Paths.get("src","test", "java", "storage",
-            "data_one_file");
-    Path clearTestDirectory = Paths.get("src","test", "java", "storage",
-            "data_multiple_files");
-
-
-    Path textFile5 = Paths.get("src","test", "java", "storage",
-            "data_one_file", "testFile5");
-    Path textFile6 = Paths.get("src","test", "java", "storage",
-            "data_multiple_files", "testFile6");
-    Path textFile7 = Paths.get("src","test", "java", "storage",
-            "data_multiple_files", "testFile7");
-    Path textFile8 = Paths.get("src","test", "java", "storage",
-            "data_multiple_files", "testFile8");
-
-    static final String MULTIPLE = "multiple";
-    static final String SINGLE = "single";
+public class DataFileDestroyerTest extends DataFileTest {
+    Path sampleTest2 = Paths.get(userDir, data, test, "sample2.xml");
+    Path sampleTest3 = Paths.get(userDir, data, test, "sample3.xml");
+    String sample2 = "sample2";
+    String sample3 = "sample3";
 
     @Test
-    void removeSingleFile_textFile5_success() {
-        DataFileDestroyer removeTest = new DataFileDestroyer();
-        File singleFileDirectory = new File(String.valueOf(removeTestDirectory));
-        removeTest.executeFunction(textFile5, "single");
+    void clearSingleFile_singleSampleTest_success() {
+        final boolean isDataDirPresent = checkDataDirectoryExistence();
 
-        String[] presentFiles = singleFileDirectory.list();
-        try {
-            Files.createFile(textFile5);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        testCheatSheetList.clear();
+        CheatSheet testCheatSheet = new CheatSheet(sample3,
+                "Test",
+                "Test Success!");
+        testCheatSheetList.add(testCheatSheet);
+
+        createDirectory(sampleTestDir);
+        createSampleFile(sampleTest3, empty);
+        File sampleFile3 = sampleTest3.toFile();
+        testDestroyer.executeFunction(sample3);
+
+        boolean isSampleRemoved = !sampleFile3.exists();
+        if (!isSampleRemoved) {
+            eraseFile(sampleTest3);
+            eraseFile(sampleTestDir);
         }
+        restoreDataDir(isDataDirPresent);
 
-        assert presentFiles != null;
-        assertEquals(presentFiles.length, 0);
+        testCheatSheetList.clear();
+        assertTrue(isSampleRemoved);
     }
 
     @Test
-    void clearDirectory_textFiles_success() {
-        DataFileDestroyer removeTest = new DataFileDestroyer();
-        File multipleFileDirectory = new File(String.valueOf(clearTestDirectory));
-        removeTest.executeFunction(clearTestDirectory, MULTIPLE);
+    void clearDirectory_multipleSampleTest_success() {
+        final boolean isDataDirPresent = checkDataDirectoryExistence();
 
-        String[] presentFiles = multipleFileDirectory.list();
+        createDirectory(sampleTestDir);
+        createSampleFile(sampleTest2, empty);
+        createSampleFile(sampleTest3, empty);
 
-        try {
-            Files.createFile(textFile6);
-            Files.createFile(textFile7);
-            Files.createFile(textFile8);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        CheatSheet testCheatSheet2 = new CheatSheet(sample2,
+                "Test",
+                "Test Success!");
+        CheatSheet testCheatSheet3 = new CheatSheet(sample3,
+                "Test",
+                "Test Success!");
+
+        testCheatSheetList.clear();
+        testCheatSheetList.add(testCheatSheet2);
+        testCheatSheetList.add(testCheatSheet3);
+
+        File sampleFile2 = sampleTest2.toFile();
+        File sampleFile3 = sampleTest3.toFile();
+        testDestroyer.executeFunction();
+
+        boolean isSampleRemoved = !(sampleFile2.exists() || sampleFile3.exists());
+        if (!isSampleRemoved) {
+            eraseFile(sampleTest2);
+            eraseFile(sampleTest3);
+            eraseFile(sampleTestDir);
         }
+        restoreDataDir(isDataDirPresent);
 
-        assert presentFiles != null;
-        assertEquals(presentFiles.length, 0);
+        testCheatSheetList.clear();
+        assertTrue(isSampleRemoved);
     }
+
+
 }

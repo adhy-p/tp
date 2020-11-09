@@ -1,52 +1,105 @@
 package ui;
 
+import cheatsheet.CheatSheetList;
 import command.Command;
-import command.CommandExecutor;
+import editor.Editor;
 import exception.CommandException;
 import parser.Parser;
-import storage.DataFileDestroyer;
+import settings.Settings;
 import storage.DataFileReader;
 import storage.DataFileWriter;
+import storage.DataFileDestroyer;
+import org.fusesource.jansi.AnsiConsole;
 
+import java.io.IOException;
 
+// This class manages the overall program flow of CheatLogs.
 public class UserSession {
     /*
-     * These are objects that will be passed to command subclasses
-     * that allow them to execute helper functions.
+     * These are objects that will be injected to command subclasses
+     * that allow them to execute.
      */
+    CheatSheetList cheatSheetList;
     DataFileReader fileReader;
     DataFileWriter fileWriter;
     DataFileDestroyer fileDestroyer;
+    Editor editor;
+    Parser userCommandParser;
+    Printer printer;
     Ui ui;
+    Settings settings;
 
+    public boolean isFirstRun;
+
+    /**
+     * Constructor for the UserSession. Creates a single instance of all
+     * common objects that are passed to the commands.
+     */
     public UserSession() {
-        fileReader = new DataFileReader();
-        fileWriter = new DataFileWriter();
+        cheatSheetList = new CheatSheetList();
+        editor = new Editor();
         ui = new Ui();
+        printer = new Printer();
+        settings = new Settings(printer);
+        fileReader = new DataFileReader(settings, printer, cheatSheetList);
+        fileWriter = new DataFileWriter(settings, printer, cheatSheetList);
+        fileDestroyer = new DataFileDestroyer(printer, cheatSheetList);
+        userCommandParser = new Parser(cheatSheetList, editor, fileDestroyer, printer, ui, settings, fileReader);
+
+        isFirstRun = false;
     }
 
     /**
-     * Runs the program based on a given user commands.
+     * Initializes CheatLogs and greets the user.
+     */
+    public void start() {
+        AnsiConsole.systemInstall();
+
+        if (isFirstRun) {
+            fileReader.extractPreloadedCheatSheets();
+        }
+        fileReader.executeFunction();
+
+        printer.printWelcomeScreen();
+        if (settings.getDisplayingHelpMessages()) {
+            printer.printStartHelpMessage();
+        }
+    }
+
+    /**
+     * A continuous loop that runs as long as this session is running.
+     * Asks for user input which is parsed to generate a command object.
+     * These command objects are then executed.
+     * Any exceptions throw are handled.
+     * This process loops till the command specifies to exit.
      */
     public void runProgramSequence() {
-        Parser userCommandParser;
-
-        Printer.printWelcomeScreen();
-        // Ask for new user input and executes it until user types an exit command
         do {
-            Printer.printUserInputPrompt();
+            printer.printUserInputPrompt();
+
             String userInput = ui.getUserInput();
             try {
-                Parser parsedUserCommand = new Parser(userInput);
-                CommandExecutor.execute(parsedUserCommand);
-            } catch (CommandException c) {
-                System.out.println(c.getMessage());
+                Command parsedUserCommand = userCommandParser.parse(userInput);
+                parsedUserCommand.execute();
+
+                if (parsedUserCommand.isExitCommand) {
+                    return;
+                }
+            } catch (CommandException | InterruptedException | IOException c) {
+                printer.print(c.getMessage());
                 continue;
             }
             fileWriter.executeFunction();
-        } while (!Command.isExitCommand);
+        } while (true);
+    }
 
+    /**
+     * Exits CheatLogs by closing certain objects and printing the exit logo.
+     */
+    public void exit() {
         ui.closeScanner();
-        Printer.printExitLogo();
+        editor.dispose();
+        printer.printExitLogo();
+        AnsiConsole.systemUninstall();
     }
 }

@@ -1,34 +1,47 @@
 package command;
 
+import cheatsheet.CheatSheet;
 import cheatsheet.CheatSheetList;
 import exception.CommandException;
-import parser.ArgumentFlagEnum;
-import parser.Parser;
+import parser.CommandFlag;
 import ui.Printer;
 
-public class ViewCommand extends Command {
-    public ViewCommand(Parser parser) {
-        super(parser);
+
+/**
+ * Views the content of a specific cheatsheet.
+ */
+public class ViewCommand extends FinderCommand {
+    public static final String invoker = "/view";
+
+    /**
+     * Constructor for ViewCommand.
+     * Required flag: Either NAME or INDEX.
+     *
+     * @param printer The printer object handles the user interaction
+     * @param cheatSheetList The cheatSheetList object holds the current list of cheatsheets
+     */
+    public ViewCommand(Printer printer, CheatSheetList cheatSheetList) {
+        super(printer, cheatSheetList);
+
+        flagsToDescriptions.put(CommandFlag.NAME, null);
+        flagsToDescriptions.put(CommandFlag.INDEX, null);
+        alternativeFlags.add(CommandFlag.NAME);
+        alternativeFlags.add(CommandFlag.INDEX);
     }
 
+    /**
+     * Gets a cheatsheet from cheatSheetList according to name or index, whichever the user entered.
+     * Content of the cheatsheet would be printed out on the terminal.
+     *
+     * @throws CommandException Thrown if the name or index entered is invalid
+     */
     @Override
     public void execute() throws CommandException {
-        int index = 0;
         try {
-            if (parser.getDescriptionMap().containsKey(ArgumentFlagEnum.NAME)) {
-                String name = parser.getDescriptionMap().get(ArgumentFlagEnum.NAME);
-                for (int i = 0; i < CheatSheetList.getSize(); i++) {
-                    if (CheatSheetList.getCheatSheet(i).getCheatSheetName().equals(name)) {
-                        index = i + 1;
-                        break;
-                    }
-                }
-            } else if (parser.getDescriptionMap().containsKey(ArgumentFlagEnum.INDEX)) {
-                index = Integer.parseInt(parser.getDescriptionMap().get(ArgumentFlagEnum.INDEX));
-            }
-            Printer.printViewCheatSheetMessage(CheatSheetList.getCheatSheet(index));
+            CheatSheet desiredCheatSheet = getCheatSheetFromNameOrIndex();
+            printer.printViewCheatSheetMessage(desiredCheatSheet);
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
-            throw new CommandException("Please enter a valid index");
+            throw new CommandException("Please enter a valid name or/and index");
         }
     }
 }

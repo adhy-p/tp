@@ -1,49 +1,181 @@
 package storage;
 
 import cheatsheet.CheatSheet;
-import cheatsheet.CheatSheetList;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DataFileWriterTest {
-    final String fileName = "Sample1";
-    final String fileProgrammingLanguage = "C++";
-    final String fileDetails = "Use case statements to check multiple conditions.";
+public class DataFileWriterTest extends DataFileTest {
 
-    Path textFile = Paths.get("src","test", "java", "storage",
-            "data_present", "testFile1");
-    Path textCompareFile = Paths.get("src","test", "java", "storage",
-            "data_present", "Sample1");
+    String fileInput = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"
+            + System.lineSeparator()
+            + "<main>"
+            + System.lineSeparator()
+            + "    <favourite>NO</favourite>"
+            + System.lineSeparator()
+            + "    <subject>Test</subject>"
+            + System.lineSeparator()
+            + "    <contents>Test Success!</contents>"
+            + System.lineSeparator()
+            + "</main>"
+            + System.lineSeparator();
+
+    String fileInput2 = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"
+            + System.lineSeparator()
+            + "<main>"
+            + System.lineSeparator()
+            + "    <favourite>NO</favourite>"
+            + System.lineSeparator()
+            + "    <subject>Test</subject>"
+            + System.lineSeparator()
+            + "    <contents>Test Updated Success!</contents>"
+            + System.lineSeparator()
+            + "</main>"
+            + System.lineSeparator();
+
+    Path sampleTest = Paths.get(userDir, data, test, "sample.xml");
+    final Path settingsFile = Paths.get(userDir, data, "settings.txt");
 
     @Test
-    public void writeDataFiles_cheatSheetObject_success() {
-        CheatSheetList.add(new CheatSheet(fileName, fileProgrammingLanguage,
-                fileDetails));
-        new DataFileWriter(textCompareFile);
-        File createdFile = new File(String.valueOf(textCompareFile));
+    void writeDataFiles_emptyTestCheatSheetList_success() {
+        final boolean isDataDirPresent = checkDataDirectoryExistence();
+        if (!isDataDirPresent) {
+            createDirectory(dataDir);
+        }
 
+        testCheatSheetList.clear();
+        String[] userDirectoryFiles = dataDir.toFile().list();
+        final int expectedFiles = userDirectoryFiles != null ? userDirectoryFiles.length + 1 : 1; // +1 for settings.txt
+
+        testWriter.executeFunction();
+        userDirectoryFiles = dataDir.toFile().list();
+        restoreDataDir(isDataDirPresent);
+
+        testCheatSheetList.clear();
+
+        int directoryFiles = userDirectoryFiles != null ? userDirectoryFiles.length : 0;
+        assertEquals(expectedFiles, directoryFiles);
+    }
+
+
+    @Test
+    void writeFileExists_sampleCheatsheet_success() {
+        final boolean isDataDirPresent = checkDataDirectoryExistence();
+        if (!isDataDirPresent) {
+            createDirectory(dataDir);
+        }
+
+        testCheatSheetList.clear();
+        CheatSheet testCheatSheet = new CheatSheet(sample,
+                "Test",
+                "Test Success!");
+        testCheatSheetList.add(testCheatSheet);
+
+        testWriter.executeFunction();
+        boolean isSampleAdded = sampleTest.toFile().exists();
+
+        if (isSampleAdded) {
+            eraseFile(sampleTest);
+        }
+
+        eraseFile(sampleTestDir);
+        restoreDataDir(isDataDirPresent);
+
+        testCheatSheetList.clear();
+        assertTrue(isSampleAdded);
+    }
+
+    @Test
+    void writeFileContents_sampleCheatsheet_success() {
+        final boolean isDataDirPresent = checkDataDirectoryExistence();
+        if (!isDataDirPresent) {
+            createDirectory(dataDir);
+        }
+        testCheatSheetList.clear();
+
+        CheatSheet testCheatSheet = new CheatSheet(sample,
+                "Test",
+                "Test Success!");
+        testCheatSheetList.add(testCheatSheet);
+        testWriter.executeFunction();
+
+        String writtenFile = empty;
         try {
-            String referenceFile = Files.readString(textFile);
-            String actualFile = Files.readString(textCompareFile);
-            assertEquals(referenceFile, actualFile);
+            writtenFile = Files.readString(sampleTest);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            printer.print(e.getMessage());
         } finally {
-            createdFile.delete();
-            removeCheatSheet();
+            if (sampleTest.toFile().exists()) {
+                eraseFile(sampleTest);
+            }
+
+            eraseFile(sampleTestDir);
+            restoreDataDir(isDataDirPresent);
+
+            testCheatSheetList.clear();
+            assertEquals(fileInput, writtenFile);
         }
     }
 
-    void removeCheatSheet() {
-        int cheatSheetIndex = CheatSheetList.getSize();
-        CheatSheet testCheatSheet = CheatSheetList.getCheatSheet(cheatSheetIndex);
-        CheatSheetList.remove(testCheatSheet.getCheatSheetName());
+    @Test
+    void writeFileExists_missingUserDir_success() {
+        final boolean isDataDirPresent = checkDataDirectoryExistence();
+
+        testCheatSheetList.clear();
+        CheatSheet testCheatSheet = new CheatSheet(sample,
+                "Test",
+                "Test Success!");
+        testCheatSheetList.add(testCheatSheet);
+
+        testWriter.executeFunction();
+        boolean isSampleAdded = sampleTest.toFile().exists();
+
+        if (isSampleAdded) {
+            eraseFile(sampleTest);
+        }
+        eraseFile(sampleTestDir);
+        restoreDataDir(isDataDirPresent);
+
+        testCheatSheetList.clear();
+        assertTrue(isSampleAdded);
+    }
+
+    @Test
+    void writeFileContents_existingCheatsheet_success() {
+        final boolean isDataDirPresent = checkDataDirectoryExistence();
+        if (!isDataDirPresent) {
+            createDirectory(dataDir);
+        }
+        createDirectory(sampleTestDir);
+        createSampleFile(sampleTest, fileInput);
+
+        testCheatSheetList.clear();
+        CheatSheet testCheatSheet = new CheatSheet(sample,
+                "Test",
+                "Test Updated Success!");
+        testCheatSheetList.add(testCheatSheet);
+        testWriter.executeFunction();
+
+        String writtenFile = empty;
+        try {
+            writtenFile = Files.readString(sampleTest);
+        } catch (IOException e) {
+            printer.print(e.getMessage());
+        } finally {
+            if (sampleTest.toFile().exists()) {
+                eraseFile(sampleTest);
+            }
+            eraseFile(sampleTestDir);
+            restoreDataDir(isDataDirPresent);
+
+            testCheatSheetList.clear();
+            assertEquals(fileInput2, writtenFile);
+        }
     }
 }
